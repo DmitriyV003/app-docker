@@ -7,3 +7,4 @@ before_install:
 
 script:
   - docker run frontend-app npm run test -- --coverage
+  -
