@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:16-alpine as builder
 
 WORKDIR ./app
 
@@ -10,5 +10,9 @@ COPY . .
 RUN npm run build
 
 FROM nginx:latest
+RUN rm -rf /etc/nginx/conf.d
+COPY conf /etc/nginx
 EXPOSE 80
-COPY --from=0 /app/build /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html
+
+CMD ["nginx", "-g", "daemon off;"]
